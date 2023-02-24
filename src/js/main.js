@@ -60,7 +60,7 @@ function renderCocktail(cocktail) {
   else imgCocktail=cocktail.strDrinkThumb;
 
   let html = `<li class="li-list">
-        <article class="cocktail js-li-cocktail" id=${cocktail.idDrink}>        
+        <article class="cocktail js-li-cocktail js-cocktail-${cocktail.idDrink}" id=${cocktail.idDrink}>        
         <img class="cocktail_img"src="${imgCocktail}" alt="imagen cocktail">
         <h3 class="cocktail_title">${cocktail.strDrink}</h3>
         </article> 
@@ -135,24 +135,21 @@ function handleClickButtonSearch(ev) {
       console.log(data);
       listCocktailsData = data.drinks;
       renderCocktailList(listCocktailsData);
-      // ckeckInFavorites();
+      ckeckInFavorites(listCocktailsData);
       //comprobar que esta en favoritos
     });
 }
-function ckeckInFavorites(){
+function ckeckInFavorites(listCocktailsData){
   //recorre la lista listCocktailsData
   //mirar si esta en la lista de favoritos listFavoritesData
   for (let cocktail of listCocktailsData){
-    
-      const selectedCocktail = listFavoritesData.find(favoriteCocktail => favoriteCocktail.idDrink === cocktail.idDrink);
-      if (selectedCocktail){
-      console.log('encontrado');
-      console.log(selectedCocktail);
-      selectedCocktail.classList.add('selected');
-      }
-      
+    const selectedCocktail = listFavoritesData.find(favoriteCocktail => favoriteCocktail.idDrink === cocktail.idDrink);
+    if (selectedCocktail){
+      const className=`js-cocktail-${cocktail.idDrink}`;
+      const liElementsList = document.getElementsByClassName(className);
+      liElementsList[0].classList.add('selected');
     }
-    
+  }
 }
 function addEventToFavorite() {
   const iconCloseFavorites = document.querySelectorAll(".js-icon-close");
@@ -169,15 +166,15 @@ function handleClickIconClose(ev) {
   console.log('monica');
   console.log(ev.currentTarget.id);
 
-//findeIndex: la posición donde está el elemento, o -1 sino está en el listado
- const indexCocktail = listFavoritesData.findIndex(cocktail => cocktail.idDrink === idSelected)
-//   // //Comprobar si ya existe el favorite
- listFavoritesData.splice(indexCocktail, 1);
- console.log(indexCocktail);
- //Pintar en el listado HTML de favoritos:
+  //findeIndex: la posición donde está el elemento seleccionado
+  const indexCocktail = listFavoritesData.findIndex(cocktail => cocktail.idDrink === idSelected)
+  listFavoritesData.splice(indexCocktail, 1);
+  console.log(indexCocktail);
+  //Pintar en el listado HTML de favoritos:
   renderFavoriteList(listFavoritesData);
+  //si el listado está vacío limpiamos el localstorage
   if (!(listFavoritesData.length===0))
-  localStorage.setItem("cocktails", JSON.stringify(listFavoritesData));
+    localStorage.setItem("cocktails", JSON.stringify(listFavoritesData));
   else localStorage.clear();
  }
 
