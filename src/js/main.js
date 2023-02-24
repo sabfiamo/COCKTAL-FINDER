@@ -10,13 +10,20 @@ const inputCoctailName = document.querySelector('.js-input');
 const listFavorites = document.querySelector('.js-list-favorites');
 
 
-let COCKTAIL_NAME= 'margarita';
+const COCKTAIL_NAME= 'margarita';
 let COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
 
 
 let listCocktailsData = [];
 let listFavoritesData = [];
-
+//Buscar en el ls
+const cocktailStored = JSON.parse(localStorage.getItem("cocktails"));
+if (cocktailStored) { 
+  console.log('cocktailStored');
+  console.log(cocktailStored);
+    listFavoritesData = cocktailStored;
+    renderFavoriteList(listFavoritesData);
+} else {
 //Fetch obtener los datos
 fetch(COCKTAIL_URL)
 .then(response => response.json())
@@ -24,7 +31,7 @@ fetch(COCKTAIL_URL)
     console.log(data);
     listCocktailsData = data.drinks;
     renderCocktailList(listCocktailsData);
-});
+})};
 
 //Pinta todos los elementos de la lista
 function renderCocktailList(listCocktailsData) {
@@ -79,6 +86,7 @@ function handleClick(ev) {
   }
 //Pintar en el listado HTML de favoritos:
   renderFavoriteList(listFavoritesData);
+  localStorage.setItem("cocktails", JSON.stringify(listFavoritesData));
  }
 
 function addEventToCocktail() {
@@ -90,8 +98,12 @@ function addEventToCocktail() {
 
 function handleClickButtonSearch(ev) {
   ev.preventDefault();
+  
   const searchValue = inputCoctailName.value;
-  COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchValue}`;
+  if (!searchValue) COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
+  else  {COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchValue}`;
+  inputCoctailName.value=COCKTAIL_NAME;
+}
 
 //Fetch obtener los datos
   fetch(COCKTAIL_URL)
@@ -100,6 +112,7 @@ function handleClickButtonSearch(ev) {
       console.log(data);
       listCocktailsData = data.drinks;
       renderCocktailList(listCocktailsData);
+      
     });
 }
 
