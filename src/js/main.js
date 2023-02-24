@@ -1,40 +1,46 @@
 'use strict';
 
-console.log('>> Ready :)');
 //variables
-
-
 const listCocktails = document.querySelector('.js-list-cocktails');
 const searchButton = document.querySelector('.js-btn-search');
 const resetButton = document.querySelector('.js-btn-reset');
 const inputCoctailName = document.querySelector('.js-input');
 const listFavorites = document.querySelector('.js-list-favorites');
-
-
+const clearAllFavoritesButton = document.querySelector('.js-btn-clear');
 
 const COCKTAIL_NAME= 'margarita';
-let COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
 
-
+let cocktailUrl='';
 let listCocktailsData = [];
 let listFavoritesData = [];
-//Buscar en el ls
-const cocktailStored = JSON.parse(localStorage.getItem("cocktails"));
-if (cocktailStored) { 
-  console.log('vamos a lista de favoritos desde el local storage');
-  console.log(cocktailStored);
-    listFavoritesData = cocktailStored;
-    // listFavoritesData[0].strDrinkThumb='';
-    renderFavoriteList(listFavoritesData);
-} else {
+
+checkInfoLocalStorage();
+
+//Comprueba si hay datos en el localStorage y los pinta
+function checkInfoLocalStorage() {
+  const cocktailStored = JSON.parse(localStorage.getItem("cocktails"));
+//Si en el localStorage hay datos
+if (cocktailStored) 
+{
+  listFavoritesData = cocktailStored;
+  // listFavoritesData[0].strDrinkThumb='';
+  renderFavoriteList(listFavoritesData);
+} else
+{
+//Fetch obtener los datos por defecto
+  cocktailUrl=`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
+  fetchToApi(cocktailUrl);
+};
+}
 //Fetch obtener los datos
-fetch(COCKTAIL_URL)
-.then(response => response.json())
-.then(data => {
-    console.log(data);
-    listCocktailsData = data.drinks;
-    renderCocktailList(listCocktailsData);
-})};
+function fetchToApi(url){
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      listCocktailsData = data.drinks;
+      renderCocktailList(listCocktailsData);
+    })
+}
 
 //Pinta todos los elementos de la lista
 function renderCocktailList(listCocktailsData) {
@@ -66,7 +72,6 @@ function renderCocktail(cocktail) {
         <h3 class="cocktail_title">${cocktail.strDrink}</h3>
         </article> 
     </li> `;
-  
   return html;
 }
 //Pintar un elemento de la lista de favoritos
@@ -88,7 +93,6 @@ function renderFavorite(cocktail) {
   return html;
 }
 
-
 function handleClick(ev) {
 
   ev.currentTarget.classList.toggle('selected');
@@ -101,17 +105,17 @@ function handleClick(ev) {
   // //Comprobar si ya existe el favorite
 
   if (indexCocktail === -1) { //no está en el listado de favoritos
-        //La guardo en el listado de favoritos: push
-        listFavoritesData.push(selectedCocktail);
-    } else { //si está en el listado de favoritos eliminarlo
-        //splice: elimina un elemento a partir de una posición
-        listFavoritesData.splice(indexCocktail, 1);
-    }
+    //La guardo en el listado de favoritos: push
+    listFavoritesData.push(selectedCocktail);
+  } else { //si está en el listado de favoritos eliminarlo
+    //splice: elimina un elemento a partir de una posición
+    listFavoritesData.splice(indexCocktail, 1);
+  }
  
 //Pintar en el listado HTML de favoritos:
   renderFavoriteList(listFavoritesData);
   localStorage.setItem("cocktails", JSON.stringify(listFavoritesData));
- }
+}
 
 function addEventToCocktail() {
   const liElementsList = document.querySelectorAll(".js-li-cocktail");
@@ -124,18 +128,19 @@ function handleClickButtonSearch(ev) {
   ev.preventDefault();
   
   const searchValue = inputCoctailName.value;
-  if (!searchValue) COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
-  else  COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchValue}`;
+  if (!searchValue) cocktailUrl = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
+  else  cocktailUrl = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchValue}`;
   
-//Fetch obtener los datos
-  fetch(COCKTAIL_URL)
+//Fetch obtener los datos y comprobar si está en favoritos
+  fetch(cocktailUrl)
     .then(response => response.json())
     .then(data => {
       console.log(data);
       listCocktailsData = data.drinks;
       renderCocktailList(listCocktailsData);
-      ckeckInFavorites();
       //comprobar que esta en favoritos
+      ckeckInFavorites();
+      
     });
 }
 function handleClickButtonReset(ev) {
@@ -143,17 +148,18 @@ function handleClickButtonReset(ev) {
   localStorage.clear();
   listFavoritesData = [];
   renderFavoriteList(listFavoritesData);
-  COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
+  cocktailUrl = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
   //Fetch obtener los datos
-  fetch(COCKTAIL_URL)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      listCocktailsData = data.drinks;
-      renderCocktailList(listCocktailsData);
-  });
-
+  fetchToApi(cocktailUrl);
 }
+function handleClickButtonClearAllFavorites(ev) {
+  ev.preventDefault();
+  localStorage.clear();
+  listFavoritesData = [];
+  renderFavoriteList(listFavoritesData);
+  ckeckInFavorites();
+}
+
 function ckeckInFavorites(){
   //recorre la lista listCocktailsData
   //mirar si esta en la lista de favoritos listFavoritesData
@@ -163,9 +169,10 @@ function ckeckInFavorites(){
     const className=`js-cocktail-${cocktail.idDrink}`;
     const liElementsList = document.getElementsByClassName(className);
     if (selectedCocktail){
-      //si lo encuentra, añade la clase "selected"
+      //si lo encuentra, lo seleciona en la lista
       liElementsList[0].classList.add('selected');
     }
+    //si no lo encuentra, lo desseleciona en la lista
     else{
       liElementsList[0].classList.remove('selected');
     }
@@ -183,13 +190,9 @@ function addEventToFavorite() {
 function handleClickIconClose(ev) {
   ev.preventDefault();
   const idSelected = ev.currentTarget.id;
-  console.log('monica');
-  console.log(ev.currentTarget.id);
-
   //findeIndex: la posición donde está el elemento seleccionado
-  const indexCocktail = listFavoritesData.findIndex(cocktail => cocktail.idDrink === idSelected)
+  const indexCocktail = listFavoritesData.findIndex(cocktail => cocktail.idDrink === idSelected);
   listFavoritesData.splice(indexCocktail, 1);
-  console.log(indexCocktail);
   //Pintar en el listado HTML de favoritos:
   renderFavoriteList(listFavoritesData);
   ckeckInFavorites();
@@ -197,7 +200,9 @@ function handleClickIconClose(ev) {
   if (!(listFavoritesData.length===0))
     localStorage.setItem("cocktails", JSON.stringify(listFavoritesData));
   else localStorage.clear();
- }
+}
 
 searchButton.addEventListener("click", handleClickButtonSearch);
 resetButton.addEventListener("click", handleClickButtonReset);
+clearAllFavoritesButton.addEventListener("click", handleClickButtonClearAllFavorites);
+
