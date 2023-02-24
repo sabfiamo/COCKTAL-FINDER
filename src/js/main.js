@@ -47,7 +47,7 @@ function renderCocktailList(listCocktailsData) {
 function renderFavoriteList(listFavoritesData) {
   listFavorites.innerHTML = "";
   for (const cocktail of listFavoritesData) {
-    listFavorites.innerHTML += renderFavorito(cocktail);
+    listFavorites.innerHTML += renderFavorite(cocktail);
   }
   addEventToFavorite();
 }
@@ -69,7 +69,7 @@ function renderCocktail(cocktail) {
   return html;
 }
 //Pintar un elemento de la lista de favoritos
-function renderFavorito(cocktail) {
+function renderFavorite(cocktail) {
   let imgCocktail='';
   if (!cocktail.strDrinkThumb){
     imgCocktail=`https://via.placeholder.com/210x295/ffffff/666666/?text=Cocktail ${cocktail.strDrink}`
@@ -77,7 +77,7 @@ function renderFavorito(cocktail) {
   else imgCocktail=cocktail.strDrinkThumb;
 
   let html = `<li class="li-list">
-        <article class="cocktail js-li-cocktail" id=${cocktail.idDrink}>        
+        <article class="cocktail js-li-favorite" id=${cocktail.idDrink}>        
         <img class="cocktail_img"src="${imgCocktail}" alt="imagen cocktail">
         <h3 class="cocktail_title">${cocktail.strDrink}</h3>
         <i class="fa-solid fa-circle-xmark js-icon-close" id=${cocktail.idDrink}></i>
@@ -93,15 +93,20 @@ function handleClick(ev) {
   ev.currentTarget.classList.toggle('selected');
   const idSelected = ev.currentTarget.id;
   // //find : devuelve el primer elemento que cumpla una condición 
-  // const selectedCocktail = listCocktailsData.find(cocktail => cocktail.idDrink === idSelected);
+  const selectedCocktail = listCocktailsData.find(cocktail => cocktail.idDrink === idSelected);
 
   // //findeIndex: la posición donde está el elemento, o -1 sino está en el listado
   const indexCocktail = listFavoritesData.findIndex(cocktail => cocktail.idDrink === idSelected)
   // //Comprobar si ya existe el favorite
 
- //splice: elimina un elemento a partir de una posición
-  listFavoritesData.splice(indexCocktail, 1);
-
+  if (indexCocktail === -1) { //no está en el listado de favoritos
+        //La guardo en el listado de favoritos: push
+        listFavoritesData.push(selectedCocktail);
+    } else { //si está en el listado de favoritos eliminarlo
+        //splice: elimina un elemento a partir de una posición
+        listFavoritesData.splice(indexCocktail, 1);
+    }
+ 
 //Pintar en el listado HTML de favoritos:
   renderFavoriteList(listFavoritesData);
   localStorage.setItem("cocktails", JSON.stringify(listFavoritesData));
@@ -130,7 +135,7 @@ function handleClickButtonSearch(ev) {
       console.log(data);
       listCocktailsData = data.drinks;
       renderCocktailList(listCocktailsData);
-      ckeckInFavorites();
+      // ckeckInFavorites();
       //comprobar que esta en favoritos
     });
 }
@@ -171,8 +176,9 @@ function handleClickIconClose(ev) {
  console.log(indexCocktail);
  //Pintar en el listado HTML de favoritos:
   renderFavoriteList(listFavoritesData);
+  if (!(listFavoritesData.length===0))
   localStorage.setItem("cocktails", JSON.stringify(listFavoritesData));
-
+  else localStorage.clear();
  }
 
 searchButton.addEventListener("click", handleClickButtonSearch);
