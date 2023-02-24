@@ -6,6 +6,7 @@ console.log('>> Ready :)');
 
 const listCocktails = document.querySelector('.js-list-cocktails');
 const searchButton = document.querySelector('.js-btn-search');
+const resetButton = document.querySelector('.js-btn-reset');
 const inputCoctailName = document.querySelector('.js-input');
 const listFavorites = document.querySelector('.js-list-favorites');
 
@@ -124,10 +125,8 @@ function handleClickButtonSearch(ev) {
   
   const searchValue = inputCoctailName.value;
   if (!searchValue) COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
-  else  {COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchValue}`;
+  else  COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchValue}`;
   
-}
-
 //Fetch obtener los datos
   fetch(COCKTAIL_URL)
     .then(response => response.json())
@@ -135,19 +134,40 @@ function handleClickButtonSearch(ev) {
       console.log(data);
       listCocktailsData = data.drinks;
       renderCocktailList(listCocktailsData);
-      ckeckInFavorites(listCocktailsData);
+      ckeckInFavorites();
       //comprobar que esta en favoritos
     });
 }
-function ckeckInFavorites(listCocktailsData){
+function handleClickButtonReset(ev) {
+  ev.preventDefault();
+  localStorage.clear();
+  listFavoritesData = [];
+  renderFavoriteList(listFavoritesData);
+  COCKTAIL_URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
+  //Fetch obtener los datos
+  fetch(COCKTAIL_URL)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      listCocktailsData = data.drinks;
+      renderCocktailList(listCocktailsData);
+  });
+
+}
+function ckeckInFavorites(){
   //recorre la lista listCocktailsData
   //mirar si esta en la lista de favoritos listFavoritesData
   for (let cocktail of listCocktailsData){
+    //por cada cocktail de la lista lo busca en favoritos
     const selectedCocktail = listFavoritesData.find(favoriteCocktail => favoriteCocktail.idDrink === cocktail.idDrink);
+    const className=`js-cocktail-${cocktail.idDrink}`;
+    const liElementsList = document.getElementsByClassName(className);
     if (selectedCocktail){
-      const className=`js-cocktail-${cocktail.idDrink}`;
-      const liElementsList = document.getElementsByClassName(className);
+      //si lo encuentra, añade la clase "selected"
       liElementsList[0].classList.add('selected');
+    }
+    else{
+      liElementsList[0].classList.remove('selected');
     }
   }
 }
@@ -172,6 +192,7 @@ function handleClickIconClose(ev) {
   console.log(indexCocktail);
   //Pintar en el listado HTML de favoritos:
   renderFavoriteList(listFavoritesData);
+  ckeckInFavorites();
   //si el listado está vacío limpiamos el localstorage
   if (!(listFavoritesData.length===0))
     localStorage.setItem("cocktails", JSON.stringify(listFavoritesData));
@@ -179,3 +200,4 @@ function handleClickIconClose(ev) {
  }
 
 searchButton.addEventListener("click", handleClickButtonSearch);
+resetButton.addEventListener("click", handleClickButtonReset);
