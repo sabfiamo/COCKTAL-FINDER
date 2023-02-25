@@ -1,7 +1,7 @@
 # **Buscador de cócteles.** Ejercicio de evaluación final del modulo 2.
 
 En este proyecto se ha desarrolado una aplicación web que contiene un listado de las bebidas y cócteles de
-todo el mundo. La aplicación se conecta al API abierto de **TheCocktailDB** y busca las bebidas/cócteles 
+todo el mundo. La aplicación se conecta al API abierto de **TheCocktailDB** y busca las bebidas/cócteles, 
 permitiendo des/marcar las bebidas como favoritas y las guarda en local storage.
 
 ## Construido con 🛠️
