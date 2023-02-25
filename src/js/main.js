@@ -59,7 +59,7 @@ function renderFavoriteList(listFavoritesData) {
 function renderCocktail(cocktail) {
   let imgCocktail='';
   if (!cocktail.strDrinkThumb){
-    imgCocktail=`https://via.placeholder.com/210x295/ffffff/666666/?text=Cocktail ${cocktail.strDrink}`
+    imgCocktail=`https://via.placeholder.com/210x210/1aba3a/ffffff.jpeg?text=Cocktail ${(cocktail.strDrink).toUpperCase()}`;
   }
   else imgCocktail=cocktail.strDrinkThumb;
 
@@ -75,7 +75,7 @@ function renderCocktail(cocktail) {
 function renderFavorite(cocktail) {
   let imgCocktail='';
   if (!cocktail.strDrinkThumb){
-    imgCocktail=`https://via.placeholder.com/210x210/1aba3a/ffffff.jpeg?text=COCKTEL ${(cocktail.strDrink).toUpperCase()}`
+    imgCocktail=`https://via.placeholder.com/210x210/1aba3a/ffffff.jpeg?text=COCKTEL ${(cocktail.strDrink).toUpperCase()}`;
     
   }
   else imgCocktail=cocktail.strDrinkThumb;
