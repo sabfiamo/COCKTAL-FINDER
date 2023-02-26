@@ -22,7 +22,8 @@ function checkInfoLocalStorage() {
   {
     listFavoritesData = cocktailStored;
     renderFavoriteList(listFavoritesData);
-  } else
+  } 
+  else
   {
     //Fetch obtener los datos por defecto
     cocktailUrl=`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
@@ -42,7 +43,8 @@ function fetchToApi(url){
 function renderCocktailList(listCocktailsData) {
   listCocktails.innerHTML = '';
   for (const cocktail of listCocktailsData) {
-    listCocktails.innerHTML += renderCocktail(cocktail);
+
+    renderCocktail(cocktail);
   }
   addEventToCocktail();
 }
@@ -50,7 +52,7 @@ function renderCocktailList(listCocktailsData) {
 function renderFavoriteList(listFavoritesData) {
   listFavorites.innerHTML = '';
   for (const cocktail of listFavoritesData) {
-    listFavorites.innerHTML += renderFavorite(cocktail);
+    renderFavorite(cocktail);
   }
   addEventToFavorite();
 }
@@ -62,13 +64,26 @@ function renderCocktail(cocktail) {
   }
   else imgCocktail=cocktail.strDrinkThumb;
 
-  let html = `<li class="li-list">
-        <article class="article--cocktail js-li-cocktail" id=${cocktail.idDrink}>        
-        <img class="article--cocktail__img"src="${imgCocktail}" alt="imagen cocktail">
-        <h3 class="article--cocktail__title">${cocktail.strDrink}</h3>
-        </article> 
-    </li> `;
-  return html;
+  const newItemLi = document.createElement('li');
+
+  const newItemArticle = document.createElement('article');
+  newItemArticle.setAttribute('class','article--cocktail js-li-cocktail');
+  newItemArticle.setAttribute('id',cocktail.idDrink);
+
+  const newItemImg = document.createElement('img');
+  newItemImg.setAttribute('class','article--cocktail__img');
+  newItemImg.src=imgCocktail;
+ 
+  const newItemH3 = document.createElement('h3');
+  newItemH3.setAttribute('class','article--cocktail__title');
+  const newContentH3 = document.createTextNode(cocktail.strDrink);
+  newItemH3.appendChild(newContentH3);
+ 
+  listCocktails.appendChild(newItemLi);
+  newItemLi.appendChild(newItemArticle);
+  newItemArticle.appendChild(newItemImg);
+  newItemArticle.appendChild(newItemH3);
+
 }
 //Pintar un elemento de la lista de favoritos
 function renderFavorite(cocktail) {
@@ -78,15 +93,32 @@ function renderFavorite(cocktail) {
   }
   else imgCocktail=cocktail.strDrinkThumb;
 
-  let html = `<li class="li-list">
-        <article class="article--favorite js-li-favorite" id=${cocktail.idDrink}>        
-        <img class="article--favorite__img"src="${imgCocktail}" alt="imagen cocktail">
-        <h3 class="article--favorite__title">${cocktail.strDrink}</h3>
-        <i class="article--favorite__icon fa-solid fa-circle-xmark js-icon-close" id=${cocktail.idDrink}></i>
-        </article> 
-    </li> `;
+  const newItemLi = document.createElement('li');
+
+  const newItemArticle = document.createElement('article');
+  newItemArticle.setAttribute('class','article--favorite js-li-favorite');
+  newItemArticle.setAttribute('id',cocktail.idDrink);
+
+  const newItemImg = document.createElement('img');
+  newItemImg.setAttribute('class','article--favorite__img');
+  newItemImg.src=imgCocktail;
+ 
+  const newItemH3 = document.createElement('h3');
+  newItemH3.setAttribute('class','article--favorite__title');
+  const newContentH3 = document.createTextNode(cocktail.strDrink);
+  newItemH3.appendChild(newContentH3);
+
+  const newItemIcon = document.createElement('i');
+  newItemIcon.setAttribute('class','article--favorite__icon fa-solid fa-circle-xmark js-icon-close');
+  newItemIcon.setAttribute('id',cocktail.idDrink);
+
+  listFavorites.appendChild(newItemLi);
+  newItemLi.appendChild(newItemArticle);
+  newItemArticle.appendChild(newItemImg);
+  newItemArticle.appendChild(newItemH3);
+  newItemArticle.appendChild(newItemIcon);
+
   clearAllFavoritesButton.classList.remove('hidden');
-  return html;
 }
 
 function handleClick(ev) {
@@ -135,7 +167,6 @@ function handleClickButtonSearch(ev) {
   fetch(cocktailUrl)
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       listCocktailsData = data.drinks;
       renderCocktailList(listCocktailsData);
       //comprobar que esta en favoritos
@@ -148,8 +179,9 @@ function handleClickButtonReset(ev) {
   inputCoctailName.value='';
   listFavoritesData = [];
   renderFavoriteList(listFavoritesData);
+  clearAllFavoritesButton.classList.add('hidden');
   cocktailUrl = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
-  //Fetch obtener los datos
+  //Fetch obtener los datos por defecto
   fetchToApi(cocktailUrl);
 }
 function handleClickButtonClearAllFavorites(ev) {
@@ -179,9 +211,9 @@ function ckeckInFavorites(){
   }
 }
 function addEventToFavorite() {
-  const iconCloseFavorites = document.querySelectorAll(".js-icon-close");
+  const iconCloseFavorites = document.querySelectorAll('.js-icon-close');
   for (const icon of iconCloseFavorites) {
-    icon.addEventListener("click", handleClickIconClose);
+    icon.addEventListener('click', handleClickIconClose);
   }
    
 }
