@@ -1,17 +1,6 @@
 body {
-  padding: 2rem;
-  height: 100vh;
+  padding: 20px;
+  min-height: 100vh;
   background-color: $color-bg;
   font-family: $font-main;
-}
-.main {
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-}
-.favourites {
-  width: 40vw;
-}
-.cocktails {
-  width: 40vw;
 }

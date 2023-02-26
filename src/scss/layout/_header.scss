@@ -1,15 +1,43 @@
-.page__header {
+// .page__header {
+//   display: flex;
+//   justify-content: space-evenly;
+//   margin-bottom: 3rem;
+// }
+.header {
+  background-image: url(../images/imgCocktail.jpeg);
+  background-size: contain;
+  background-repeat: repeat;
+  background-position: 60%;
+  padding-top: 20px;
+  min-height: 200px;
   display: flex;
-  justify-content: space-evenly;
-  margin-bottom: 3rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+.header--title {
+  color: white;
 }
 .input {
   padding: 10px;
-  width: 50%;
+  width: 330px;
   color: grey;
   font-size: 20px;
-  border: 1px solid aqua;
+  border: 1px solid rgb(187, 132, 60);
 }
 .form {
   padding: 30px 10px 40px 0px;
+}
+.button {
+  background-color: rgb(187, 132, 60);
+  border: none;
+  padding: 5px;
+  margin: 5px;
+  color: white;
+  font-size: 20px;
+  font-weight: bolder;
+  width: 90px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
 }
