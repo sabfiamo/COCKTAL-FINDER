@@ -27,7 +27,7 @@ function checkInfoLocalStorage() {
   cocktailUrl=`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
   fetchToApi(cocktailUrl);
 }
-//Fetch obtener los datos
+//Fetch obtener los datos de la api y comprobar si está en favoritos
 function fetchToApi(url){
   fetch(url)
     .then(response => response.json())
@@ -162,14 +162,7 @@ function handleClickButtonSearch(ev) {
   else  cocktailUrl = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchValue}`;
   
   //Fetch obtener los datos y comprobar si está en favoritos
-  fetch(cocktailUrl)
-    .then(response => response.json())
-    .then(data => {
-      listCocktailsData = data.drinks;
-      renderCocktailList(listCocktailsData);
-      //comprobar que esta en favoritos
-      ckeckInFavorites();
-    });
+  fetchToApi(cocktailUrl);
 }
 //Handle sobre el botón reset
 function handleClickButtonReset(ev) {
