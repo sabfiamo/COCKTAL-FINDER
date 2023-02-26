@@ -22,13 +22,10 @@ function checkInfoLocalStorage() {
   {
     listFavoritesData = cocktailStored;
     renderFavoriteList(listFavoritesData);
-  } 
-  else
-  {
-    //Fetch obtener los datos por defecto
-    cocktailUrl=`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
-    fetchToApi(cocktailUrl);
   }
+  //Fetch para obtener los datos por defecto de la lista de cócteles
+  cocktailUrl=`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${COCKTAIL_NAME}`;
+  fetchToApi(cocktailUrl);
 }
 //Fetch obtener los datos
 function fetchToApi(url){
@@ -37,6 +34,7 @@ function fetchToApi(url){
     .then(data => {
       listCocktailsData = data.drinks;
       renderCocktailList(listCocktailsData);
+      ckeckInFavorites();
     })
 }
 //Pinta todos los elementos de la lista
@@ -120,7 +118,7 @@ function renderFavorite(cocktail) {
 
   clearAllFavoritesButton.classList.remove('hidden');
 }
-
+//Handle sobre cada elemento de la lista de cócteles
 function handleClick(ev) {
 
   ev.currentTarget.classList.toggle('selected');
@@ -149,14 +147,14 @@ function handleClick(ev) {
     clearAllFavoritesButton.classList.add('hidden');
   }
 }
-
+//Añade un listener al evento click sobre los li de los cócteles
 function addEventToCocktail() {
   const liElementsList = document.querySelectorAll('.js-li-cocktail');
   for (const li of liElementsList) {
     li.addEventListener('click', handleClick);
   }
 }
-
+//Handle sobre el botón buscar
 function handleClickButtonSearch(ev) {
   ev.preventDefault();
   const searchValue = inputCoctailName.value;
@@ -173,6 +171,7 @@ function handleClickButtonSearch(ev) {
       ckeckInFavorites();
     });
 }
+//Handle sobre el botón reset
 function handleClickButtonReset(ev) {
   ev.preventDefault();
   localStorage.clear();
@@ -184,6 +183,7 @@ function handleClickButtonReset(ev) {
   //Fetch obtener los datos por defecto
   fetchToApi(cocktailUrl);
 }
+//Handle sobre el botón borrar todos los favoritos
 function handleClickButtonClearAllFavorites(ev) {
   ev.preventDefault();
   localStorage.clear();
@@ -192,24 +192,25 @@ function handleClickButtonClearAllFavorites(ev) {
   ckeckInFavorites();
   clearAllFavoritesButton.classList.add('hidden');
 }
-
+//Comprobar si el favorito está en la lista de cócteles para marcarlo como seleccionado o no
 function ckeckInFavorites(){
-  //recorre la lista listCocktailsData
-  //mirar si esta en la lista de favoritos listFavoritesData
+  //Recorrer la lista de cócteles
+  //mirar si esta en la lista de favoritos
   const arrayListaCocktail=document.querySelectorAll('.js-li-cocktail');
   for (let liCocktail of arrayListaCocktail){
     //por cada li de cocktails buscamos su id en favoritos
     const selectedCocktail = listFavoritesData.find(favoriteCocktail => favoriteCocktail.idDrink === liCocktail.id);
     if (selectedCocktail){
-      //si lo encuentra, lo seleciona en la lista
+      //si lo encuentra, lo selecciona en la lista
       liCocktail.classList.add('selected');
     }
-    //si no lo encuentra, lo desseleciona en la lista
+    //si no lo encuentra, lo deselecciona en la lista
     else{
       liCocktail.classList.remove('selected');
     }
   }
 }
+//Añade un listener al evento click sobre los iconos x
 function addEventToFavorite() {
   const iconCloseFavorites = document.querySelectorAll('.js-icon-close');
   for (const icon of iconCloseFavorites) {
@@ -217,22 +218,26 @@ function addEventToFavorite() {
   }
    
 }
+//Cuando hacemos click sobre el icono x 
 function handleClickIconClose(ev) {
   ev.preventDefault();
+  //id del elemento seleccionado
   const idSelected = ev.currentTarget.id;
-  //findeIndex: la posición donde está el elemento seleccionado
+  //findeIndex: la posición de la lista de favoritos donde está el elemento seleccionado
   const indexCocktail = listFavoritesData.findIndex(cocktail => cocktail.idDrink === idSelected);
-
+  //Borrar de la lista de favoritos el elemento seleccionado
   listFavoritesData.splice(indexCocktail, 1);
 
-  //Pintar en el listado HTML de favoritos:
+  //Pintar en el listado HTML de favoritos
   renderFavoriteList(listFavoritesData);
+  //Comprobar si el favorito está en la lista de cócteles
   ckeckInFavorites();
-  //si el listado está vacío limpiamos el localstorage
+  //Si el listado de favoritos está vacío limpiamos el localstorage
   if (!(listFavoritesData.length===0))
     localStorage.setItem('cocktails', JSON.stringify(listFavoritesData));
   else {
     localStorage.clear();
+    //Ocultar el botón de borrar todos los favoritos
     clearAllFavoritesButton.classList.add('hidden');
   }
 }

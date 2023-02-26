@@ -9,6 +9,7 @@
   gap: 20px;
   background-color: rgb(99, 162, 63);
   padding: 20px;
+  min-height: 770px;
 }
 .favorites {
   border: 5px solid rgb(187, 132, 60);
@@ -53,6 +54,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
   padding: 15px;
   margin-bottom: 10px;
   &__img {
@@ -61,7 +63,6 @@
   }
   &__title {
     text-align: left;
-    // width: 500px;
     padding-left: 10px;
   }
   &__icon {
@@ -69,13 +70,8 @@
   }
 }
 .article--cocktail {
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
   padding: 15px;
   margin: 10px;
-  // width: 250px;
-  // height: 250px;
   &__img {
     width: 150px;
     height: 150px;
@@ -94,8 +90,6 @@
     list-style-type: none;
     display: flex;
     flex-wrap: wrap;
-    // display: grid;
-    // grid-template-columns: 1fr 1fr 1fr;
   }
   &--title {
     background-color: white;
