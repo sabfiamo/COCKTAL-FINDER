@@ -1,5 +1,5 @@
-.selected {
-  background-color: rgb(159, 191, 122);
+.selected.article--cocktail {
+  background-color: rgb(99, 162, 63);
   color: white;
 }
 .main {
@@ -7,7 +7,7 @@
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 20px;
-  background-color: rgb(99, 162, 63);
+  background-color: rgb(159, 191, 122);
   padding: 20px;
   min-height: 770px;
 }
@@ -63,15 +63,19 @@
   }
   &__title {
     text-align: left;
+    width: 70%;
     padding-left: 10px;
+    color: rgb(99, 162, 63);
   }
   &__icon {
     font-size: 30px;
+    color: rgb(99, 162, 63);
   }
 }
 .article--cocktail {
   padding: 15px;
   margin: 10px;
+  color: rgb(99, 162, 63);
   &__img {
     width: 150px;
     height: 150px;
