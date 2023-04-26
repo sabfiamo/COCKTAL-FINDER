@@ -8,11 +8,18 @@
   grid-template-columns: 1fr 2fr;
   gap: 20px;
   background-color: rgb(159, 191, 122);
+  // background-color: rgb(43, 104, 43);
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.65),
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.65)
+  );
   padding: 20px;
   min-height: 770px;
 }
 .favorites {
-  border: 5px solid rgb(187, 132, 60);
+  border: 5px solid green;
   display: flex;
   flex-direction: column;
 
@@ -20,7 +27,7 @@
     list-style-type: none;
   }
   &--title {
-    background-color: rgb(187, 132, 60);
+    background-color: green;
     color: white;
     text-align: center;
     padding-top: 20px;
@@ -33,7 +40,7 @@
     align-items: flex-end;
   }
   &--btnClearAll {
-    background-color: rgb(187, 132, 60);
+    background-color: green;
     border: none;
     padding: 5px;
     margin: 5px;
@@ -60,6 +67,7 @@
   &__img {
     width: 150px;
     height: 150px;
+    border-radius: 50%;
   }
   &__title {
     text-align: left;
@@ -77,12 +85,13 @@
   margin: 10px;
   color: rgb(99, 162, 63);
   &__img {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     padding: 10px;
+    border-radius: 50%;
   }
   &__title {
-    text-align: left;
+    text-align: center;
     width: 100%;
     padding-left: 10px;
   }
