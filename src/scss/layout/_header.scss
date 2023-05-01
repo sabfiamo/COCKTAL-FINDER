@@ -1,42 +1,11 @@
-.header {
-  background-image: url(../images/beverage_beach_vector_293774.jpg);
-  background-size: 40%;
-  
-  background-repeat: no repeat;
-  background-position: right;
-
-  padding-top: 20px;
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-}
 .header--title {
   color: green;
-  transform: translateX(-150px);
+  font-size: 25px;
+  font-style: italic;
+  transform: translateY(30px);
+  position: absolute;
 }
-.input {
-  padding: 10px;
-  width: 330px;
-  color: grey;
-  font-size: 20px;
-  border: 1px solid rgb(187, 132, 60);
-}
-.form {
-  padding: 30px 10px 40px 0px;
-}
-.button {
-  // background-color: rgb(187, 132, 60);
-  background-color: green;
-  border: none;
-  padding: 5px;
-  margin: 5px;
-  color: white;
-  font-size: 20px;
-  font-weight: bolder;
-  width: 90px;
-  height: 40px;
-  border-radius: 10px;
-  cursor: pointer;
+.header {
+  display: flex;
+  justify-content: center;
 }

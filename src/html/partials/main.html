@@ -1,15 +1,31 @@
 <main class="main">
-  <section class="favorites">
-    <h2 class="favorites--title">Cócteles favoritos</h2>
-    <ul class="favorites--list js-list-favorites"></ul>
-    <div class="favorites--container__button js-btn-cleanAllFavorites">
-      <button class="favorites--btnClearAll hidden js-btn-clear">
-        Borrar favoritos
-      </button>
-    </div>
+  <section class="hero"></section>
+  <section class="search">
+    <form class="form" action="">
+      <input
+        type="text"
+        placeholder="Introduce un coctel.Ej:margarita"
+        class="input js-input"
+      />
+      <div>
+        <button class="button js-btn-search">Buscar</button>
+        <button class="button js-btn-reset">Borrar</button>
+      </div>
+    </form>
   </section>
-  <section class="cocktail">
-    <h2 class="cocktail--title">Lista</h2>
-    <ul class="cocktail--list js-list-cocktails"></ul>
+  <section class="coctails">
+    <section class="favorites">
+      <h2 class="favorites--title">Cócteles favoritos</h2>
+      <ul class="favorites--list js-list-favorites"></ul>
+      <div class="favorites--container__button js-btn-cleanAllFavorites">
+        <button class="favorites--btnClearAll hidden js-btn-clear">
+          Borrar favoritos
+        </button>
+      </div>
+    </section>
+    <section class="cocktail">
+      <h2 class="cocktail--title">Listado de cócteles</h2>
+      <ul class="cocktail--list js-list-cocktails"></ul>
+    </section>
   </section>
 </main>
